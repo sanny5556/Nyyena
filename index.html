@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Birthday Letter & Journey</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;500&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;500;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg-black: #050505;
             --paper-color: #fdfaf5; 
             --heart-red: #ff4757;
-            --board-black: #121212; 
-            --border-white: rgba(255, 255, 255, 0.8);
         }
 
         body {
@@ -20,6 +18,7 @@
             margin: 0;
             overflow-x: hidden;
             font-family: 'Anuphan', sans-serif;
+            color: white;
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' style='font-size:24px'><text y='20'>❤️</text></svg>"), auto;
         }
 
@@ -38,6 +37,7 @@
             max-width: 450px;
             height: 280px;
             perspective: 1500px;
+            cursor: pointer;
         }
 
         .envelope {
@@ -49,16 +49,12 @@
             border-bottom-right-radius: 12px;
             box-shadow: 0 15px 50px rgba(0,0,0,0.9);
             z-index: 10;
-            transition: z-index 0.6s;
         }
 
         .envelope::before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 0;
+            top: 0; left: 0;
             border-top: 150px solid #ece8e1;
             border-left: 225px solid transparent;
             border-right: 225px solid transparent;
@@ -67,7 +63,6 @@
             transition: transform 0.8s ease-in-out;
         }
 
-        /* ปรับ Triangle ของซองจดหมายให้ยืดหยุ่น */
         @media (max-width: 480px) {
             .envelope::before {
                 border-left-width: 45vw;
@@ -77,11 +72,9 @@
 
         .wax-seal {
             position: absolute;
-            top: 80px;
-            left: 50%;
+            top: 80px; left: 50%;
             transform: translateX(-50%);
-            width: 140px;
-            height: 140px;
+            width: 140px; height: 140px;
             z-index: 15;
             background-image: url('wax.png'); 
             background-size: contain;
@@ -95,8 +88,6 @@
             position: absolute;
             width: 95vw;
             max-width: 600px;
-            height: auto;
-            min-height: 350px;
             background: white;
             padding: 30px;
             border-radius: 15px;
@@ -104,139 +95,185 @@
             transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             opacity: 0;
             z-index: 5;
-            top: 50%; 
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.8); 
             box-sizing: border-box;
         }
 
-        h3 { font-family: 'Caveat', cursive; color: #a11a1a; font-size: 1.8rem; margin-top: 0; text-align: center; }
-        p { font-size: 0.95rem; line-height: 1.6; color: #333; word-wrap: break-word; }
+        .content h3 { font-family: 'Caveat', cursive; color: #a11a1a; font-size: 1.8rem; text-align: center; }
+        .content p { font-size: 0.95rem; line-height: 1.6; color: #333; }
 
-        .container.open .envelope { z-index: 1; }
         .container.open .envelope::before { transform: rotateX(180deg); z-index: 1; }
-        .container.open .wax-seal { opacity: 0; transform: translateX(-50%) scale(1.5) rotate(20deg); pointer-events: none; }
+        .container.open .wax-seal { opacity: 0; transform: translateX(-50%) scale(1.5); pointer-events: none; }
         .container.open .content { opacity: 1; z-index: 50; transform: translate(-50%, -50%) scale(1); }
 
         .hint { position: absolute; bottom: -80px; width: 100%; text-align: center; color: #666; letter-spacing: 2px; font-size: 0.8rem; }
 
-        /* --- Section 2: Timeline & Black Board (Responsive) --- */
+        /* --- Section 2: Timeline Journey --- */
         .timeline-container {
-            padding: 100px 0;
+            padding: 50px 0 50px 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: center; 
             width: 100%;
+            opacity: 0;
+            transition: 1s ease;
+            box-sizing: border-box;
         }
 
-        .gift-wrapper {
+        .timeline-container.visible { opacity: 1; }
+
+        .memory-section {
+            width: 100%;
+            margin-bottom: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .memory-text {
+            font-size: 1.15rem;
+            margin-bottom: 30px;
+            font-weight: 500;
+            color: #eee;
+            text-align: center;
+            max-width: 90%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.8s ease;
+        }
+
+        .memory-image-container {
             position: relative;
-            margin-bottom: 450px;
-            display: flex;
+            width: 85%;
+            max-width: 320px;
+            background: white; 
+            padding: 12px 12px 35px 12px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.6);
+            opacity: 0;
+            transform: scale(0.9); 
+            transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .pin {
+            position: absolute;
+            top: -12px; left: 50%;
+            transform: translateX(-50%);
+            width: 18px; height: 18px;
+            background: var(--heart-red);
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset -3px -3px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .memory-image-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .reveal .memory-text { opacity: 1; transform: translateY(0); }
+        .reveal .memory-image-container { 
+            opacity: 1; 
+            transform: scale(1) rotate(0deg); 
+        }
+
+        .memory-section:nth-child(odd).reveal .memory-image-container { transform: scale(1) rotate(-1deg); }
+        .memory-section:nth-child(even).reveal .memory-image-container { transform: scale(1) rotate(1deg); }
+
+        /* --- Section 3: The Why List --- */
+        .why-list-section {
+            padding: 100px 20px 100px 20px;
+            max-width: 650px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .why-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--heart-red);
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+        }
+
+        .why-item {
+            margin-bottom: 45px;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #f0f0f0;
+            min-height: 1.2em;
+            font-weight: 300;
+        }
+
+        .heart-particle { position: fixed; pointer-events: none; z-index: 9999; }
+
+        /* --- New Section: Big Heart Trigger --- */
+        #finalHeartSection {
+            display: none;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            padding: 300px 0 150px 0; 
             opacity: 0;
-            transition: 1.2s;
-            width: 100%;
+            transition: 2s ease;
+            position: relative;
         }
 
-        .gift-wrapper.show { opacity: 1; }
-
-        .gift-box {
-            width: 90px; height: 90px; background: var(--heart-red);
-            border-radius: 10px; cursor: pointer; position: relative;
-            z-index: 20; display: flex; justify-content: center; align-items: center;
-            font-size: 2rem; transition: 0.5s;
-            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.5);
+        .big-heart {
+            font-size: 120px;
+            cursor: pointer;
+            animation: pulseHeart 1.5s infinite;
+            filter: drop-shadow(0 0 15px var(--heart-red));
+            user-select: none;
         }
 
-        /* --- กระดานดำฉบับ Responsive --- */
-        .black-board {
-            position: absolute;
-            width: 90vw;
-            max-width: 750px;
-            height: 450px;
-            background: var(--board-black);
-            border: 3px solid var(--border-white);
-            border-radius: 15px;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            transform-origin: center center;
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1;
+        @keyframes pulseHeart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        @media (max-width: 600px) {
-            .black-board { height: 500px; } /* เพิ่มความสูงในมือถือเพื่อให้แนวตั้งจุรูปได้ */
-        }
-
-        .opened .black-board {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .memory-card {
-            position: absolute;
-            width: 160px; /* ลดขนาดรูปในมือถือ */
-            background: white;
-            padding: 8px 8px 20px 8px;
-            border-radius: 3px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @media (min-width: 768px) {
-            .memory-card { width: 220px; }
-        }
-
-        /* จัดตำแหน่งรูปให้ดูดีทั้งคอมและมือถือ */
-        .opened .card-left { 
-            opacity: 1; transform: scale(1) rotate(-7deg); 
-            left: 5%; top: 10%; transition-delay: 0.5s; 
-        }
-        .opened .card-right { 
-            opacity: 1; transform: scale(1) rotate(6deg); 
-            right: 5%; bottom: 10%; transition-delay: 0.7s; 
-        }
-
-        @media (max-width: 480px) {
-            .opened .card-left { left: 10%; top: 5%; }
-            .opened .card-right { right: 10%; bottom: 5%; }
-        }
-
-        .memory-card img { width: 100%; border-radius: 2px; }
-        .memory-card p { font-size: 0.75rem; color: #333; margin: 8px 0 0 0; text-align: center; }
-
-        /* รอยเท้า */
-        .footprint-path {
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            top: 220px;
+        .word-p {
+            position: fixed;
             pointer-events: none;
+            z-index: 10000;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 71, 87, 0.8);
+            white-space: nowrap;
         }
 
-        .foot {
-            font-size: 1.5rem;
+        .hbd-banner {
+            display: none;
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            text-shadow: 0 0 30px var(--heart-red);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .wish-text {
+            display: none;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: left; /* เปลี่ยนจาก center เป็น left */
+            color: #eee;
+            max-width: 85%;
+            margin-top: 40px; /* เพิ่มระยะห่างจาก Banner */
+            margin-bottom: 300px;
             opacity: 0;
-            transition: opacity 1s ease;
-            margin: 30px 0;
-            filter: invert(1) brightness(1.2); 
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
-        .foot.left { transform: translateX(-25px) rotate(165deg); }
-        .foot.right { transform: translateX(25px) rotate(195deg); }
-        .foot.visible { opacity: 0.4; }
-
-        .heart-particle { 
-            position: fixed; 
-            pointer-events: none; 
-            z-index: 9999; 
+        .wish-text p {
+            margin-bottom: 30px; /* เว้นระยะห่างระหว่างบรรทัด 1 กับ 2 */
         }
     </style>
 </head>
@@ -266,78 +303,170 @@
         </div>
     </div>
 
-    <div class="timeline-container">
-        
-        <div class="gift-wrapper show" id="wrap1">
-            <div class="gift-box" onclick="openGift(1)">🎁</div>
-            <div class="black-board">
-                <div class="photo-cluster">
-                    <div class="memory-card card-left">
-                        <img src="1-1.JPG">
-                        <p>Our first date.</p>
-                    </div>
-                    <div class="memory-card card-right">
-                        <img src="1-2.JPG">
-                        <p>I love your smile.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="footprint-path">
-                <div class="foot left">👣</div><div class="foot right">👣</div>
-            </div>
-        </div>
+    <div class="timeline-container" id="timeline">
+        <div class="memory-section"><div class="memory-text">“Our first restaurant date.”</div><div class="memory-image-container"><div class="pin"></div><img src="1-1.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“We walked along the beach, and I secretly took a photo of you.”</div><div class="memory-image-container"><div class="pin"></div><img src="1-2.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“Hehe, I stole your graduation gown and tried it on.”</div><div class="memory-image-container"><div class="pin"></div><img src="2-1.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“A picture of us on your graduation day."</div><div class="memory-image-container"><div class="pin"></div><img src="2-2.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“You always make this face when you're staring at your phone hahaha."</div><div class="memory-image-container"><div class="pin"></div><img src="3-1.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“I kissed your cheek and took this photo at the cafe."</div><div class="memory-image-container"><div class="pin"></div><img src="3-2.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“Our photobooth picture together."</div><div class="memory-image-container"><div class="pin"></div><img src="3-3.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“Our first couple photo from the China trip."</div><div class="memory-image-container"><div class="pin"></div><img src="4-1.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“A photo of us at the subway station."</div><div class="memory-image-container"><div class="pin"></div><img src="4-2.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“Our photo in front of the temple, it was insanely crowded."</div><div class="memory-image-container"><div class="pin"></div><img src="4-3.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“We tried our luck with scratch lottery and won 70 yuan."</div><div class="memory-image-container"><div class="pin"></div><img src="4-4.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“A picture of us, but why are you making that face?"</div><div class="memory-image-container"><div class="pin"></div><img src="4-5.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“I don't know, but it looks cool."</div><div class="memory-image-container"><div class="pin"></div><img src="4-6.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“Our last photo together before going back to Thailand."</div><div class="memory-image-container"><div class="pin"></div><img src="4-7.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“See? I told you - you always make that face when you're on your phone."</div><div class="memory-image-container"><div class="pin"></div><img src="5-1.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“Our last photo before disaster...."</div><div class="memory-image-container"><div class="pin"></div><img src="5-2.JPG"></div></div>
+        <div class="memory-section"><div class="memory-text">“I don't know, but you look beautiful in this photo."</div><div class="memory-image-container"><div class="pin"></div><img src="5-3.JPG"></div></div>
+    </div>
 
-        <div class="gift-wrapper" id="wrap2">
-            <div class="gift-box" onclick="openGift(2)">🎁</div>
-            <div class="black-board">
-                <div class="photo-cluster">
-                    <div class="memory-card card-left">
-                        <img src="2-1.JPG">
-                        <p>Special moment.</p>
-                    </div>
-                    <div class="memory-card card-right">
-                        <img src="2-2.JPG">
-                        <p>Happy Birthday!</p>
-                    </div>
-                </div>
-            </div>
-            <div class="footprint-path">
-                <div class="foot left">👣</div><div class="foot right">👣</div>
-            </div>
-        </div>
+    <div class="why-list-section" id="whySection">
+        <h2 class="why-title">Everything I want to say...</h2>
+        <div class="why-item" id="typewriter1"></div>
+        <div class="why-item" id="typewriter2"></div>
+        <div class="why-item" id="typewriter3"></div>
+        <div class="why-item" id="typewriter4"></div>
+        <div class="why-item" id="typewriter5"></div>
+    </div>
 
+    <div id="finalHeartSection">
+        <div class="big-heart" id="bigHeartBtn">❤️</div>
+        <div class="hbd-banner" id="hbdBanner">HAPPY BIRTHDAY!</div>
+        <div class="wish-text" id="wishText">
+            <p>I wish you a year—and many more—filled only with the happiness and success you truly deserve.</p> 
+            <p>I’ll always be right here, cheering you on forever.</p>
+            <p>I love you more than words can say. I’m so grateful that this year, I get to be the one spending your birthday by your side.</p>
+            <p style="font-weight: 500; color: var(--heart-red); margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;">
+                And it's not just me who has a surprise for you... <br>
+                Go take a look under your pillow. 
+            </p>
+        </div>
     </div>
 
     <script>
         const container = document.getElementById('mainContainer');
+        const timeline = document.getElementById('timeline');
         const music = document.getElementById('bgMusic');
         let shootingHearts = null;
+
+        const messages = [
+            "I love your eyes, your nose, your lips, your face, your scent — everything about you.",
+            "I love how straightforward you are. Sometimes I get confused by your words, but I still like that you say things honestly and directly.",
+            "I love everything about who you are. I don’t know how to explain it… but you’re incredibly charming to me.",
+        ];
+
+        const explosiveWords = ["I ❤️ YOU", "I ❤️ NYYENA", "SAN ❤️ NYYENA"];
 
         container.addEventListener('click', () => {
             const isOpen = container.classList.toggle('open');
             if (isOpen) {
                 music.play().catch(() => {});
+                timeline.classList.add('visible');
                 spawnHearts(window.innerWidth/2, window.innerHeight/2);
-                startHeartCannons(); 
+                startHeartCannons();
             }
         });
 
-        const footObserver = new IntersectionObserver((entries) => {
+        const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+                if (entry.isIntersecting) entry.target.classList.add('reveal');
             });
         }, { threshold: 0.2 });
 
-        document.querySelectorAll('.foot').forEach(f => footObserver.observe(f));
+        document.querySelectorAll('.memory-section').forEach(section => {
+            revealObserver.observe(section);
+        });
 
-        function openGift(num) {
-            const wrap = document.getElementById('wrap' + num);
-            if (!wrap.classList.contains('opened')) {
-                wrap.classList.add('opened');
-                spawnHearts(window.innerWidth/2, window.scrollY + window.innerHeight/2);
-                const nextWrap = document.getElementById('wrap' + (num + 1));
-                if (nextWrap) setTimeout(() => nextWrap.classList.add('show'), 1000);
+        let startedTypewriter = false;
+        const whyObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !startedTypewriter) {
+                startedTypewriter = true;
+                startAllTypewriters();
             }
+        }, { threshold: 0.5 });
+
+        whyObserver.observe(document.getElementById('whySection'));
+
+        async function startAllTypewriters() {
+            for (let i = 0; i < messages.length; i++) {
+                await typeEffect(`typewriter${i+1}`, messages[i]);
+                await new Promise(r => setTimeout(r, 1000)); 
+            }
+            const fSection = document.getElementById('finalHeartSection');
+            fSection.style.display = 'flex';
+            setTimeout(() => fSection.style.opacity = '1', 100);
+        }
+
+        function typeEffect(elementId, text) {
+            return new Promise((resolve) => {
+                let i = 0;
+                const ele = document.getElementById(elementId);
+                const interval = setInterval(() => {
+                    ele.innerHTML += text.charAt(i);
+                    i++;
+                    if (i >= text.length) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 40); 
+            });
+        }
+
+        const bigHeartBtn = document.getElementById('bigHeartBtn');
+        bigHeartBtn.addEventListener('click', () => {
+            bigHeartBtn.style.display = 'none'; 
+            
+            const screenCenterX = window.innerWidth / 2;
+            const screenCenterY = window.innerHeight / 2;
+
+            for(let i=0; i<45; i++) {
+                setTimeout(() => {
+                    createWordPop(explosiveWords[Math.floor(Math.random()*explosiveWords.length)], screenCenterX, screenCenterY);
+                }, i * 40);
+            }
+
+            setTimeout(() => {
+                const banner = document.getElementById('hbdBanner');
+                const wish = document.getElementById('wishText');
+                
+                banner.style.display = 'block';
+                banner.animate([
+                    { transform: 'scale(0.5)', opacity: 0 },
+                    { transform: 'scale(1)', opacity: 1 }
+                ], { duration: 1000, fill: 'forwards', easing: 'ease-out' });
+
+                setTimeout(() => {
+                    wish.style.display = 'flex';
+                    wish.style.flexDirection = 'column';
+                    wish.animate([
+                        { opacity: 0, transform: 'translateY(20px)' },
+                        { opacity: 1, transform: 'translateY(0)' }
+                    ], { duration: 1500, fill: 'forwards' });
+                }, 800);
+            }, 1000);
+        });
+
+        function createWordPop(text, startX, startY) {
+            const w = document.createElement('div');
+            w.className = 'word-p';
+            w.innerText = text;
+            w.style.left = startX + 'px';
+            w.style.top = startY + 'px';
+            w.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            document.body.appendChild(w);
+
+            const angle = Math.random() * Math.PI * 2;
+            const dist = Math.random() * 800 + 300;
+            const x = Math.cos(angle) * dist;
+            const y = Math.sin(angle) * dist;
+
+            w.animate([
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                { transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(1.5)`, opacity: 0 }
+            ], { duration: 2500, easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)' }).onfinish = () => w.remove();
         }
 
         function spawnHearts(x, y) {
@@ -349,7 +478,6 @@
                 heart.style.top = y + 'px';
                 heart.style.position = 'absolute';
                 document.body.appendChild(heart);
-                
                 const destX = (Math.random() - 0.5) * 400;
                 const destY = (Math.random() - 0.5) * 400;
                 heart.animate([
@@ -364,27 +492,25 @@
             shootingHearts = setInterval(() => {
                 createCannonHeart(0, window.innerHeight, 60); 
                 createCannonHeart(window.innerWidth, window.innerHeight, -60);
-            }, 300); // รัวกำลังดีสำหรับมือถือ
+            }, 150); 
         }
 
         function createCannonHeart(x, y, angleBase) {
             const heart = document.createElement('div');
             heart.className = 'heart-particle';
-            heart.innerHTML = ['❤️', '💖', '💕'][Math.floor(Math.random() * 3)];
+            heart.innerHTML = ['❤️', '💖', '💕', '✨'][Math.floor(Math.random() * 4)];
             heart.style.left = x + 'px';
             heart.style.top = y + 'px';
             heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
             document.body.appendChild(heart);
-
-            const angle = (angleBase + (Math.random() - 0.5) * 40) * (Math.PI / 180);
-            const velocity = Math.random() * 400 + 500; 
-            const destX = Math.cos(angle) * velocity + (x === 0 ? 150 : -150);
+            const angle = (angleBase + (Math.random() - 0.5) * 45) * (Math.PI / 180);
+            const velocity = Math.random() * 500 + 800; 
+            const destX = Math.cos(angle) * velocity + (x === 0 ? 300 : -300);
             const destY = -Math.sin(Math.abs(angle)) * velocity;
-
             heart.animate([
-                { transform: 'translate(-50%, -50%) rotate(0deg)', opacity: 1 },
-                { transform: `translate(${destX}px, ${destY}px) rotate(360deg) scale(0)`, opacity: 0 }
-            ], { duration: 2500 }).onfinish = () => heart.remove();
+                { transform: 'translate(-50%, -50%) rotate(0deg) scale(1)', opacity: 1 },
+                { transform: `translate(${destX}px, ${destY}px) rotate(${Math.random() * 360}deg) scale(0)`, opacity: 0 }
+            ], { duration: 2500, easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)' }).onfinish = () => heart.remove();
         }
     </script>
 </body>
